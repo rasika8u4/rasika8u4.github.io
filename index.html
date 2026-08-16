@@ -3,249 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය - The Mind Council</title>
+    <title>ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය - The Council of Aranya</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --accent: #38bdf8;
-            --border: #334155;
+            --bg: #090d16;
+            --card-bg: #131b2e;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --border: #1e293b;
+            --vibhava: #38bdf8;
+            --jaya: #f472b6;
+            --caster: #facc15;
+            --vidushaka: #c084fc;
+            --athmika: #4ade80;
+            --thatta: #fb923c;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Sinhala", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 10px;
         }
-        .chat-container {
+
+        .chat-app {
             width: 100%;
-            max-width: 850px;
-            height: 90vh;
+            max-width: 900px;
+            height: 94vh;
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             overflow: hidden;
         }
+
         .header {
-            padding: 18px 24px;
-            background: #090d16;
+            padding: 16px 24px;
+            background: rgba(9, 13, 22, 0.9);
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .header h1 {
-            font-size: 1.2rem;
-            margin: 0;
-            color: var(--accent);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .header span {
+
+        .archetype-pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .pill {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .settings-bar {
+            padding: 10px 24px;
+            background: #060911;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: center;
             font-size: 0.8rem;
-            color: #94a3b8;
+            flex-wrap: wrap;
         }
-        .messages {
+
+        .settings-bar select, .settings-bar input {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            outline: none;
+        }
+
+        .messages-container {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
+
         .message {
-            padding: 14px 18px;
-            border-radius: 12px;
-            max-width: 85%;
-            line-height: 1.6;
+            max-width: 88%;
+            line-height: 1.7;
             font-size: 0.95rem;
-            white-space: pre-wrap;
+            border-radius: 16px;
+            padding: 16px 20px;
         }
-        .user-msg {
-            background: #0284c7;
+
+        .user-message {
             align-self: flex-end;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
             color: #fff;
-            border-bottom-right-radius: 2px;
+            border-bottom-right-radius: 4px;
         }
-        .bot-msg {
-            background: #0b1329;
+
+        .council-message {
             align-self: flex-start;
+            background: #090f1d;
             border: 1px solid var(--border);
-            border-bottom-left-radius: 2px;
+            border-bottom-left-radius: 4px;
+            width: 100%;
+            max-width: 100%;
         }
-        .persona-vibhava { color: #38bdf8; font-weight: bold; }
-        .persona-jaya { color: #f472b6; font-weight: bold; }
-        .persona-caster { color: #facc15; font-weight: bold; }
-        .persona-vidushaka { color: #a78bfa; font-weight: bold; }
-        .persona-athmika { color: #4ade80; font-weight: bold; }
-        .persona-thatta { color: #fb923c; font-weight: bold; }
-        
-        .input-area {
-            padding: 16px;
+
+        /* Persona Block Styles */
+        .persona-box {
+            margin-bottom: 14px;
+            padding-left: 12px;
+            border-left: 3px solid #64748b;
+        }
+        .persona-box:last-child { margin-bottom: 0; }
+        .persona-box.vibhava { border-color: var(--vibhava); }
+        .persona-box.jaya { border-color: var(--jaya); }
+        .persona-box.caster { border-color: var(--caster); }
+        .persona-box.vidushaka { border-color: var(--vidushaka); }
+        .persona-box.athmika { border-color: var(--athmika); }
+        .persona-box.thatta { 
+            border-color: var(--thatta);
+            background: rgba(251, 146, 60, 0.05);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border-left-width: 4px;
+        }
+
+        .persona-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .starters {
+            padding: 10px 24px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
             background: #090d16;
             border-top: 1px solid var(--border);
-            display: flex;
-            gap: 10px;
         }
-        input[type="text"] {
-            flex: 1;
-            padding: 12px 16px;
+
+        .starter-btn {
             background: #1e293b;
+            color: var(--text-dim);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-        }
-        input[type="text"]:focus { border-color: var(--accent); }
-        button {
-            padding: 12px 24px;
-            background: var(--accent);
-            color: #0f172a;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: 0.2s;
         }
-        button:hover { opacity: 0.9; }
-        .config-bar {
-            padding: 8px 24px;
-            background: #050811;
-            font-size: 0.8rem;
+        .starter-btn:hover {
+            color: #fff;
+            border-color: #38bdf8;
+            background: #0f172a;
+        }
+
+        .input-area {
+            padding: 16px 24px;
+            background: #090d16;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
-        .config-bar input {
+
+        .input-area textarea {
+            flex: 1;
             background: #1e293b;
-            border: 1px solid #334155;
-            color: #aaa;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            width: 250px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            resize: none;
+            height: 48px;
+            outline: none;
+            font-family: inherit;
         }
+        .input-area textarea:focus { border-color: #38bdf8; }
+
+        .send-btn {
+            padding: 0 24px;
+            height: 48px;
+            background: #38bdf8;
+            color: #090d16;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .send-btn:hover { background: #7dd3fc; }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-<div class="chat-container">
+<div class="chat-app">
     <div class="header">
         <div>
-            <h1>ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය</h1>
-            <span>විභව | ජායා | කැස්ටර් | විදූෂක | ආත්මිකා | තට්ටයා</span>
-        </div>
-    </div>
-    
-    <!-- Free API Configuration (Stored safely in your browser localStorage) -->
-    <div class="config-bar">
-        <label>Groq API Key (Free):</label>
-        <input type="password" id="apiKey" placeholder="gsk_..." onchange="saveKey()">
-        <span style="color:#64748b;">(Key එක ඔබේ Browser එකේ පමණක් සුරැකේ)</span>
-    </div>
-
-    <div class="messages" id="messages">
-        <div class="message bot-msg">
-            <strong>තට්ට රැවුල්කාරයා:</strong> ආයුබෝවන් ආරණ්‍ය... ඔබේ සිතේ ඇති ගැටලුව, සැකය හෝ නිර්මාණාත්මක අවුල මෙතැන තබන්න. බලමු අපේ මේ පිස්සන් හත්දෙනා ඒ ගැන මොකද කියන්නේ කියලා!
+            <h1>🧠 ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය</h1>
+            <div class="archetype-pills">
+                <span class="pill" style="color:var(--vibhava)">[විභව: තර්කය]</span>
+                <span class="pill" style="color:var(--jaya)">[ජායා: හැඟීම]</span>
+                <span class="pill" style="color:var(--caster)">[කැස්ටර්: ශ්‍රමය]</span>
+                <span class="pill" style="color:var(--vidushaka)">[විදූෂක: හාස්‍යය]</span>
+                <span class="pill" style="color:var(--athmika)">[ආත්මිකා: ආධ්‍යාත්මය]</span>
+                <span class="pill" style="color:var(--thatta)">[තට්ටයා: ප්‍රඥාව]</span>
+            </div>
         </div>
     </div>
 
+    <!-- Free API Settings Bar -->
+    <div class="settings-bar">
+        <label>AI Provider:</label>
+        <select id="provider" onchange="toggleProvider()">
+            <option value="gemini">Google Gemini API (හොඳම සිංහල)</option>
+            <option value="groq">Groq Cloud (Llama 3)</option>
+        </select>
+        <input type="password" id="apiKey" placeholder="ඔබේ Free API Key එක මෙතැනට දාන්න..." onchange="saveKey()">
+        <span style="color:#64748b; font-size:0.75rem;">(Browser එකේ පමණක් සුරැකේ)</span>
+    </div>
+
+    <!-- Message Feed -->
+    <div class="messages-container" id="messages">
+        <div class="message council-message">
+            <div class="persona-box thatta">
+                <div class="persona-name" style="color:var(--thatta)">[තට්ට රැවුල්කාරයා]</div>
+                ආයුබෝවන් ආරණ්‍ය... ඔබේ සිතේ තිබෙන ගැටලුව, කම්මැලිකම, සැකය හෝ ජීවිතයේ ඕනෑම අවුලක් මෙතැන තබන්න. බලමු අපේ මේ අභ්‍යන්තර පිස්සන් හත්දෙනා ඒකට මොකද කියන්නේ කියලා!
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Starters -->
+    <div class="starters">
+        <button class="starter-btn" onclick="useStarter('මට හරිම කම්මැලියි, කිසිම වැඩක් කරන්න හිතෙන්නෙ නෑ.')">😴 මට හරිම කම්මැලියි</button>
+        <button class="starter-btn" onclick="useStarter('මම මගේ රස්සාව දාලා ආස කරන දේ පස්සෙ යන්නද?')">💼 රස්සාව දාලා යන්නද?</button>
+        <button class="starter-btn" onclick="useStarter('මම හැමදේම ගැන ඕනවට වඩා හිතලා බය වෙනවා.')">🌪️ Overthinking අවුල</button>
+        <button class="starter-btn" onclick="useStarter('මට ලස්සන නවකතාවක් ලියන්න ආසයි, පටන් ගන්නෙ කොහොමද?')">✍️ නවකතාවක් ලියන්නෙ කොහොමද?</button>
+    </div>
+
+    <!-- Input Bar -->
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="ඔබේ සිතේ ඇති ගැටලුව මෙතැන ලියන්න..." onkeypress="handleKey(event)">
-        <button onclick="sendMessage()" id="sendBtn">විමසන්න</button>
+        <textarea id="userInput" placeholder="ඔබේ සිතේ ඇති ප්‍රශ්නය මෙතැන ලියන්න..." onkeydown="handleKey(event)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">විමසන්න</button>
     </div>
 </div>
 
 <script>
-    const SYSTEM_PROMPT = `ඔබ "ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය" (The Council of Aranya) නමැති බහු-පෞරුෂ (Multi-Agent) දාර්ශනික උපදේශක AI එකයි.
-පරිශීලකයා ඉදිරිපත් කරන ඕනෑම ජීවිත ගැටලුවක්, තීරණයක් හෝ ප්‍රශ්නයක් ගැන පහත චරිත එකිනෙකා සමඟ වාද කර අවසාන ප්‍රායෝගික විසඳුම ලබාදිය යුතුය:
+    const SYSTEM_PROMPT = `ඔබ යනු 'ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය' (The Inner Council of Aranya) නමැති බහු-පෞරුෂ (Multi-Persona) සාහිත්‍යමය සහ මනෝවිද්‍යාත්මක AI පද්ධතියයි.
+පරිශීලකයා (User) ඔබට පවසන ඕනෑම මානසික ගැටලුවක්, තීරණයක් හෝ ප්‍රශ්නයක් සම්බන්ධයෙන් පහත චරිත එකිනෙකා සමඟ සජීවීව සිංහලෙන් වාද විවාද කළ යුතුය.
 
-1. [විභව]: තර්කය, අවදානම, වියදම්, සංඛ්‍යාලේඛන සහ බුද්ධිය.
-2. [ජායා]: හැඟීම, වේදනාව, සුන්දරත්වය, ආදරය සහ මනුෂ්‍යත්වය.
-3. [කැස්ටර්]: ශ්‍රමය, දහඩිය, බඩගින්න, පවුලේ පැවැත්ම සහ භෞතික යථාර්ථය.
-4. [විදූෂක]: කළු හාස්‍යය, උපහාසය සහ නරුම සත්‍යය.
-5. [ආත්මිකා]: ආධ්‍යාත්මික සත්‍යය, මව් සෙනෙහස සහ විශ්වීය කරුණාව.
-6. [තට්ට රැවුල්කාරයා]: සෙන් මාස්ටර්, සියල්ල සමතුලිත කර අවසාන ප්‍රායෝගික මඟපෙන්වීම දෙන නායකයා.
+චරිත විස්තරය:
+- [විභව]: තර්කය, දත්ත, විද්‍යාව, බිය, අවදානම් සහ වියදම් ගණනය කිරීම.
+- [ජායා]: හැඟීම, මනුෂ්‍ය දුක, ආදරය, අතීතකාමය සහ කාව්‍යමය සුන්දරත්වය.
+- [කැස්ටර්]: ශ්‍රමය, මහන්සිය, දහඩිය, බඩගින්න, පවුල රැකීම සහ භෞතික යථාර්ථය.
+- [විදූෂක]: කළු හාස්‍යය, උත්ප්‍රාසය, අනුන්ගේ සහ තමන්ගේ බොරු මවාපෑම් හෙළිදරව් කිරීම.
+- [ආත්මිකා]: ආධ්‍යාත්මික සත්‍යය, මව් සෙනෙහස, නිහඬ ගැඹුරු ප්‍රඥාව.
+- [තට්ට රැවුල්කාරයා]: සෙන් මාස්ටර්. සියල්ල සාවධානව අසා සිට අවසානයේ සාරාංශගත ප්‍රායෝගික විසඳුම ලබාදෙයි.
 
-ආකෘතිය:
-- චරිත 3-4ක් එකිනෙකාගේ අදහස් විවේචනය කරමින් නාට්‍යමය ලෙස සිංහලෙන් සංවාදයේ යෙදිය යුතුය.
-- අවසානයේ [තට්ට රැවුල්කාරයා] පැමිණ සාරාංශගත ප්‍රායෝගික විසඳුම දිය යුතුය.`;
+ප්‍රතිචාර දැක්වීමේ දැඩි නීති:
+1. නිකරුණේ එකම වාක්‍යය නැවත නැවත නොකියන්න (Do NOT loop phrases).
+2. පරිශීලකයා අසන ලද නිශ්චිත කාරණය ගැන චරිත 3-4ක් තමන්ගේ අනන්‍යතාවයට අනුව එකිනෙකාට වාද කරමින් කෙටි හා තියුණු ලෙස අදහස් දැක්විය යුතුය.
+3. අවසානයේ [තට්ට රැවුල්කාරයා] මැදිහත් වී ප්‍රායෝගික උපදෙසක් ලබාදිය යුතුය.
+4. සෑම චරිතයකම කොටස [චරිතයේ නම] යනුවෙන් ආරම්භ විය යුතුය. (උදා: [විභව]: ...)`;
 
-    // Load saved API key
-    document.getElementById('apiKey').value = localStorage.getItem('groq_api_key') || '';
+    // Local Storage Loading
+    document.getElementById('provider').value = localStorage.getItem('aranya_provider') || 'gemini';
+    document.getElementById('apiKey').value = localStorage.getItem('aranya_api_key') || '';
 
     function saveKey() {
-        localStorage.setItem('groq_api_key', document.getElementById('apiKey').value);
+        localStorage.setItem('aranya_api_key', document.getElementById('apiKey').value.trim());
+    }
+
+    function toggleProvider() {
+        localStorage.setItem('aranya_provider', document.getElementById('provider').value);
+    }
+
+    function useStarter(text) {
+        document.getElementById('userInput').value = text;
+        sendMessage();
     }
 
     function handleKey(e) {
-        if (e.key === 'Enter') sendMessage();
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
     }
 
     async function sendMessage() {
         const input = document.getElementById('userInput');
         const text = input.value.trim();
         const apiKey = document.getElementById('apiKey').value.trim();
+        const provider = document.getElementById('provider').value;
+        const sendBtn = document.getElementById('sendBtn');
 
         if (!text) return;
         if (!apiKey) {
-            alert('කරුණාකර Groq වෙතින් ලබාගත් Free API Key එක ඇතුළත් කරන්න!');
+            alert('කරුණාකර ඉහත Settings Bar එකේ ඔබේ නොමිලේ ලබාගත් API Key එක ඇතුළත් කරන්න!');
             return;
         }
 
-        // Add User Message
         const msgContainer = document.getElementById('messages');
-        msgContainer.innerHTML += `<div class="message user-msg">${text}</div>`;
+        msgContainer.innerHTML += `<div class="message user-message">${text}</div>`;
         input.value = '';
         msgContainer.scrollTop = msgContainer.scrollHeight;
 
-        // Add Loading Placeholder
         const loadingId = 'loading-' + Date.now();
-        msgContainer.innerHTML += `<div class="message bot-msg" id="${loadingId}"><em>කවුන්සිලය වාද විවාද කරමින් පවතී...</em></div>`;
+        msgContainer.innerHTML += `<div class="message council-message" id="${loadingId}"><em>කවුන්සිලයේ සාමාජිකයන් සංවාදය අරඹයි...</em></div>`;
         msgContainer.scrollTop = msgContainer.scrollHeight;
+        sendBtn.disabled = true;
 
         try {
-            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: 'llama-3.3-70b-versatile',
-                    messages: [
-                        { role: 'system', content: SYSTEM_PROMPT },
-                        { role: 'user', content: text }
-                    ],
-                    temperature: 0.8
-                })
-            });
+            let replyText = "";
 
-            const data = await response.json();
-            const reply = data.choices[0].message.content;
-            
-            // Format personas with colors
-            let formattedReply = reply
-                .replace(/\[විභව\]/g, '<span class="persona-vibhava">[විභව]</span>')
-                .replace(/\[ජායා\]/g, '<span class="persona-jaya">[ජායා]</span>')
-                .replace(/\[කැස්ටර්\]/g, '<span class="persona-caster">[කැස්ටර්]</span>')
-                .replace(/\[විදූෂක\]/g, '<span class="persona-vidushaka">[විදූෂක]</span>')
-                .replace(/\[ආත්මිකා\]/g, '<span class="persona-athmika">[ආත්මිකා]</span>')
-                .replace(/\[තට්ට රැවුල්කාරයා\]/g, '<span class="persona-thatta">[තට්ට රැවුල්කාරයා]</span>');
+            if (provider === 'gemini') {
+                // Call Google Gemini API (Fluent Sinhala)
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: SYSTEM_PROMPT + "\n\nපරිශීලකයාගේ ප්‍රශ්නය: " + text }
+                            ]
+                        }]
+                    })
+                });
+                const data = await res.json();
+                replyText = data.candidates[0].content.parts[0].text;
+            } else {
+                // Call Groq API
+                const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: SYSTEM_PROMPT },
+                            { role: 'user', content: text }
+                        ],
+                        temperature: 0.7
+                    })
+                });
+                const data = await res.json();
+                replyText = data.choices[0].message.content;
+            }
 
-            document.getElementById(loadingId).innerHTML = formattedReply;
-        } catch (error) {
-            document.getElementById(loadingId).innerHTML = `<span style="color:red;">දෝෂයක් සිදුවිය: API Key එක නිවැරදිදැයි පරීක්ෂා කරන්න.</span>`;
+            // Format Personas into clean boxes
+            const formatted = formatPersonas(replyText);
+            document.getElementById(loadingId).innerHTML = formatted;
+
+        } catch (err) {
+            document.getElementById(loadingId).innerHTML = `<span style="color:#ef4444;">දෝෂයක් සිදුවිය: API Key එක නිවැරදිද සහ තෝරාගත් Provider එකට ගැලපේදැයි පරීක්ෂා කරන්න.</span>`;
         }
 
+        sendBtn.disabled = false;
         msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    function formatPersonas(text) {
+        const personas = [
+            { tag: '\\[විභව\\]', class: 'vibhava', name: '[විභව - තර්කය]', color: 'var(--vibhava)' },
+            { tag: '\\[ජායා\\]', class: 'jaya', name: '[ජායා - හැඟීම]', color: 'var(--jaya)' },
+            { tag: '\\[කැස්ටර්\\]', class: 'caster', name: '[කැස්ටර් - ශ්‍රමය]', color: 'var(--caster)' },
+            { tag: '\\[විදූෂක\\]', class: 'vidushaka', name: '[විදූෂක - හාස්‍යය]', color: 'var(--vidushaka)' },
+            { tag: '\\[ආත්මිකා\\]', class: 'athmika', name: '[ආත්මිකා - ආධ්‍යාත්මය]', color: 'var(--athmika)' },
+            { tag: '\\[තට්ට රැවුල්කාරයා\\]', class: 'thatta', name: '[තට්ට රැවුල්කාරයා - ප්‍රඥාව]', color: 'var(--thatta)' }
+        ];
+
+        let output = text;
+        personas.forEach(p => {
+            const regex = new RegExp(p.tag + ':?', 'g');
+            output = output.replace(regex, `</div><div class="persona-box ${p.class}"><div class="persona-name" style="color:${p.color}">${p.name}</div>`);
+        });
+
+        if (output.startsWith('</div>')) {
+            output = output.substring(6);
+        }
+        return output + '</div>';
     }
 </script>
 </body>
