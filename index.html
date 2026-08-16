@@ -49,13 +49,18 @@
             padding: 16px 24px;
             background: rgba(9, 13, 22, 0.95);
             border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .header h1 {
             font-size: 1.15rem;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .archetype-pills {
@@ -71,6 +76,18 @@
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
         }
+
+        .btn-clear {
+            background: #ef444422;
+            color: #f87171;
+            border: 1px solid #ef444444;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-clear:hover { background: #ef444444; color: #fff; }
 
         .settings-bar {
             padding: 10px 24px;
@@ -230,18 +247,21 @@
 
 <div class="chat-app">
     <div class="header">
-        <h1>🧠 ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය</h1>
-        <div class="archetype-pills">
-            <span class="pill" style="color:var(--vibhava)">[විභව: තර්කය]</span>
-            <span class="pill" style="color:var(--jaya)">[ජායා: හැඟීම]</span>
-            <span class="pill" style="color:var(--caster)">[කැස්ටර්: ශ්‍රමය]</span>
-            <span class="pill" style="color:var(--vidushaka)">[විදූෂක: හාස්‍යය]</span>
-            <span class="pill" style="color:var(--athmika)">[ආත්මිකා: ආධ්‍යාත්මය]</span>
-            <span class="pill" style="color:var(--thatta)">[තට්ටයා: ප්‍රඥාව]</span>
+        <div>
+            <h1>🧠 ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය</h1>
+            <div class="archetype-pills">
+                <span class="pill" style="color:var(--vibhava)">[විභව: තර්කය]</span>
+                <span class="pill" style="color:var(--jaya)">[ජායා: හැඟීම]</span>
+                <span class="pill" style="color:var(--caster)">[කැස්ටර්: ශ්‍රමය]</span>
+                <span class="pill" style="color:var(--vidushaka)">[විදූෂක: හාස්‍යය]</span>
+                <span class="pill" style="color:var(--athmika)">[ආත්මිකා: ආධ්‍යාත්මය]</span>
+                <span class="pill" style="color:var(--thatta)">[තට්ටයා: ප්‍රඥාව]</span>
+            </div>
         </div>
+        <button class="btn-clear" onclick="clearChat()">🗑️ සංවාදය අලුත් කරන්න</button>
     </div>
 
-    <!-- Dynamic Model Loader Settings Bar -->
+    <!-- API & Dynamic Model Settings Bar -->
     <div class="settings-bar">
         <label>Gemini API Key:</label>
         <input type="password" id="apiKey" placeholder="AIzaSy..." onchange="onKeyChanged()">
@@ -249,7 +269,7 @@
         
         <label style="margin-left:8px;">Model:</label>
         <select id="modelSelect" onchange="saveSelectedModel()">
-            <option value="gemini-1.5-flash">gemini-1.5-flash (Default)</option>
+            <option value="gemini-1.5-flash">gemini-1.5-flash</option>
         </select>
     </div>
 
@@ -280,7 +300,7 @@
 
 <script>
     const SYSTEM_PROMPT = `ඔබ යනු 'ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය' (The Inner Council of Aranya) නමැති බහු-පෞරුෂ (Multi-Persona) සාහිත්‍යමය සහ මනෝවිද්‍යාත්මක AI පද්ධතියයි.
-පරිශීලකයා (User) ඔබට පවසන ඕනෑම මානසික ගැටලුවක්, තීරණයක් හෝ ප්‍රශ්නයක් සම්බන්ධයෙන් පහත චරිත එකිනෙකා සමඟ සජීවීව සිංහලෙන් වාද විවාද කළ යුතුය.
+පරිශීලකයා (User) ඔබට පවසන ඕනෑම මානසික ගැටලුවක්, තීරණයක් හෝ ප්‍රශ්නයක් සම්බන්ධයෙන් පහත චරිත එකිනෙකා සමඟ සජීවීව සිංහලෙන් වාද විවාද කළ යුතුය. ඔබ පෙර සිදුවූ සංවාද මතකයේ තබාගෙන අඛණ්ඩව පිළිතුරු දිය යුතුය.
 
 චරිත විස්තරය:
 - [විභව]: තර්කය, දත්ත, විද්‍යාව, බිය, අවදානම් සහ වියදම් ගණනය කිරීම.
@@ -290,11 +310,14 @@
 - [ආත්මිකා]: ආධ්‍යාත්මික සත්‍යය, මව් සෙනෙහස, නිහඬ ගැඹුරු ප්‍රඥාව.
 - [තට්ට රැවුල්කාරයා]: සෙන් මාස්ටර්. සියල්ල සාවධානව අසා සිට අවසානයේ සාරාංශගත ප්‍රායෝගික විසඳුම ලබාදෙයි.
 
-ප්‍රතිචාර දැක්වීමේ දැඩි නීති:
-1. නිකරුණේ එකම වාක්‍යය නැවත නැවත නොකියන්න.
-2. පරිශීලකයා අසන ලද නිශ්චිත කාරණය ගැන චරිත 3-4ක් තමන්ගේ අනන්‍යතාවයට අනුව එකිනෙකාට වාද කරමින් කෙටි හා තියුණු ලෙස අදහස් දැක්විය යුතුය.
+ප්‍රතිචාර දැක්වීමේ නීති:
+1. පරිශීලකයාගේ වත්මන් ප්‍රශ්නය මෙන්ම පෙර සංවාදයේ සන්දර්භයද (Context) සැලකිල්ලට ගන්න.
+2. චරිත 3-4ක් තමන්ගේ අනන්‍යතාවයට අනුව එකිනෙකාගේ අදහස් විවේචනය කරමින් නාට්‍යමය ලෙස අදහස් දැක්විය යුතුය.
 3. අවසානයේ [තට්ට රැවුල්කාරයා] මැදිහත් වී ප්‍රායෝගික උපදෙසක් ලබාදිය යුතුය.
 4. සෑම චරිතයකම කොටස [චරිතයේ නම] යනුවෙන් ආරම්භ විය යුතුය. (උදා: [විභව]: ...)`;
+
+    // Global Chat History Memory
+    let conversationHistory = [];
 
     // Load initial storage
     const savedKey = localStorage.getItem('aranya_gemini_key') || '';
@@ -314,6 +337,18 @@
         localStorage.setItem('aranya_selected_model', document.getElementById('modelSelect').value);
     }
 
+    function clearChat() {
+        conversationHistory = [];
+        document.getElementById('messages').innerHTML = `
+            <div class="message council-message">
+                <div class="persona-box thatta">
+                    <div class="persona-name" style="color:var(--thatta)">[තට්ට රැවුල්කාරයා]</div>
+                    සංවාද මතකය අලුත් කළා ආරණ්‍ය... අලුත් ගැටලුවක් හෝ කතාබහක් මෙතැනින් පටන් ගන්න!
+                </div>
+            </div>
+        `;
+    }
+
     async function fetchGeminiModels() {
         const apiKey = document.getElementById('apiKey').value.trim();
         const modelSelect = document.getElementById('modelSelect');
@@ -325,11 +360,8 @@
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
             const data = await res.json();
 
-            if (data.error) {
-                throw new Error(data.error.message || 'API Key එක අවලංගුයි.');
-            }
+            if (data.error) throw new Error(data.error.message);
 
-            // Filter models supporting generateContent
             const models = (data.models || []).filter(m => 
                 m.supportedGenerationMethods && 
                 m.supportedGenerationMethods.includes('generateContent') &&
@@ -402,16 +434,26 @@
         msgContainer.scrollTop = msgContainer.scrollHeight;
         sendBtn.disabled = true;
 
+        // Add user turn to conversation history
+        conversationHistory.push({
+            role: "user",
+            parts: [{ text: text }]
+        });
+
+        // Retain last 12 message turns for context without overflow
+        if (conversationHistory.length > 12) {
+            conversationHistory = conversationHistory.slice(-12);
+        }
+
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [
-                            { text: SYSTEM_PROMPT + "\n\nපරිශීලකයාගේ ප්‍රශ්නය: " + text }
-                        ]
-                    }],
+                    system_instruction: {
+                        parts: [{ text: SYSTEM_PROMPT }]
+                    },
+                    contents: conversationHistory,
                     generationConfig: {
                         temperature: 0.7
                     }
@@ -425,12 +467,20 @@
             }
 
             const replyText = data.candidates[0].content.parts[0].text;
+            
+            // Save model response to history
+            conversationHistory.push({
+                role: "model",
+                parts: [{ text: replyText }]
+            });
+
             const formatted = formatPersonas(replyText);
             document.getElementById(loadingId).innerHTML = formatted;
 
         } catch (err) {
             console.error(err);
             document.getElementById(loadingId).innerHTML = `<span style="color:#ef4444;">දෝෂය: ${err.message || 'සම්බන්ධතාවය පරීක්ෂා කරන්න.'}</span>`;
+            conversationHistory.pop();
         }
 
         sendBtn.disabled = false;
@@ -439,12 +489,12 @@
 
     function formatPersonas(text) {
         const personas = [
-            { tag: '\\[විභව\\]', class: 'vibhava', name: '[විභව - තර්කය]', color: 'var(--vibhava)' },
-            { tag: '\\[ජායා\\]', class: 'jaya', name: '[ජායා - හැඟීම]', color: 'var(--jaya)' },
-            { tag: '\\[කැස්ටර්\\]', class: 'caster', name: '[කැස්ටර් - ශ්‍රමය]', color: 'var(--caster)' },
-            { tag: '\\[විදූෂක\\]', class: 'vidushaka', name: '[විදූෂක - හාස්‍යය]', color: 'var(--vidushaka)' },
-            { tag: '\\[ආත්මිකා\\]', class: 'athmika', name: '[ආත්මිකා - ආධ්‍යාත්මය]', color: 'var(--athmika)' },
-            { tag: '\\[තට්ට රැවුල්කාරයා\\]', class: 'thatta', name: '[තට්ට රැවුල්කාරයා - ප්‍රඥාව]', color: 'var(--thatta)' }
+            { tag: '\\[විභව.*?\\]', class: 'vibhava', name: '[විභව - තර්කය]', color: 'var(--vibhava)' },
+            { tag: '\\[ජායා.*?\\]', class: 'jaya', name: '[ජායා - හැඟීම]', color: 'var(--jaya)' },
+            { tag: '\\[කැස්ටර්.*?\\]', class: 'caster', name: '[කැස්ටර් - ශ්‍රමය]', color: 'var(--caster)' },
+            { tag: '\\[විදූෂක.*?\\]', class: 'vidushaka', name: '[විදූෂක - හාස්‍යය]', color: 'var(--vidushaka)' },
+            { tag: '\\[ආත්මිකා.*?\\]', class: 'athmika', name: '[ආත්මිකා - ආධ්‍යාත්මය]', color: 'var(--athmika)' },
+            { tag: '\\[තට්ට රැවුල්කාරයා.*?\\]', class: 'thatta', name: '[තට්ට රැවුල්කාරයා - ප්‍රඥාව]', color: 'var(--thatta)' }
         ];
 
         let output = text;
