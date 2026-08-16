@@ -47,27 +47,21 @@
 
         .header {
             padding: 16px 24px;
-            background: rgba(9, 13, 22, 0.9);
+            background: rgba(9, 13, 22, 0.95);
             border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .header h1 {
             font-size: 1.15rem;
             font-weight: 700;
             color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 6px;
         }
 
         .archetype-pills {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
-            margin-top: 4px;
         }
 
         .pill {
@@ -83,7 +77,7 @@
             background: #060911;
             border-bottom: 1px solid var(--border);
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             font-size: 0.8rem;
             flex-wrap: wrap;
@@ -98,6 +92,17 @@
             font-size: 0.8rem;
             outline: none;
         }
+
+        .btn-fetch {
+            background: #334155;
+            color: #fff;
+            border: 1px solid #475569;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        .btn-fetch:hover { background: #475569; }
 
         .messages-container {
             flex: 1;
@@ -132,7 +137,6 @@
             max-width: 100%;
         }
 
-        /* Persona Block Styles */
         .persona-box {
             margin-bottom: 14px;
             padding-left: 12px;
@@ -226,28 +230,27 @@
 
 <div class="chat-app">
     <div class="header">
-        <div>
-            <h1>🧠 ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය</h1>
-            <div class="archetype-pills">
-                <span class="pill" style="color:var(--vibhava)">[විභව: තර්කය]</span>
-                <span class="pill" style="color:var(--jaya)">[ජායා: හැඟීම]</span>
-                <span class="pill" style="color:var(--caster)">[කැස්ටර්: ශ්‍රමය]</span>
-                <span class="pill" style="color:var(--vidushaka)">[විදූෂක: හාස්‍යය]</span>
-                <span class="pill" style="color:var(--athmika)">[ආත්මිකා: ආධ්‍යාත්මය]</span>
-                <span class="pill" style="color:var(--thatta)">[තට්ටයා: ප්‍රඥාව]</span>
-            </div>
+        <h1>🧠 ආරණ්‍යගේ අභ්‍යන්තර කවුන්සිලය</h1>
+        <div class="archetype-pills">
+            <span class="pill" style="color:var(--vibhava)">[විභව: තර්කය]</span>
+            <span class="pill" style="color:var(--jaya)">[ජායා: හැඟීම]</span>
+            <span class="pill" style="color:var(--caster)">[කැස්ටර්: ශ්‍රමය]</span>
+            <span class="pill" style="color:var(--vidushaka)">[විදූෂක: හාස්‍යය]</span>
+            <span class="pill" style="color:var(--athmika)">[ආත්මිකා: ආධ්‍යාත්මය]</span>
+            <span class="pill" style="color:var(--thatta)">[තට්ටයා: ප්‍රඥාව]</span>
         </div>
     </div>
 
-    <!-- Free API Settings Bar -->
+    <!-- Dynamic Model Loader Settings Bar -->
     <div class="settings-bar">
-        <label>AI Provider:</label>
-        <select id="provider" onchange="toggleProvider()">
-            <option value="gemini">Google Gemini API (හොඳම සිංහල)</option>
-            <option value="groq">Groq Cloud (Llama 3)</option>
+        <label>Gemini API Key:</label>
+        <input type="password" id="apiKey" placeholder="AIzaSy..." onchange="onKeyChanged()">
+        <button class="btn-fetch" onclick="fetchGeminiModels()">🔄 Models සොයන්න</button>
+        
+        <label style="margin-left:8px;">Model:</label>
+        <select id="modelSelect" onchange="saveSelectedModel()">
+            <option value="gemini-1.5-flash">gemini-1.5-flash (Default)</option>
         </select>
-        <input type="password" id="apiKey" placeholder="ඔබේ Free API Key එක මෙතැනට දාන්න..." onchange="saveKey()">
-        <span style="color:#64748b; font-size:0.75rem;">(Browser එකේ පමණක් සුරැකේ)</span>
     </div>
 
     <!-- Message Feed -->
@@ -288,21 +291,80 @@
 - [තට්ට රැවුල්කාරයා]: සෙන් මාස්ටර්. සියල්ල සාවධානව අසා සිට අවසානයේ සාරාංශගත ප්‍රායෝගික විසඳුම ලබාදෙයි.
 
 ප්‍රතිචාර දැක්වීමේ දැඩි නීති:
-1. නිකරුණේ එකම වාක්‍යය නැවත නැවත නොකියන්න (Do NOT loop phrases).
+1. නිකරුණේ එකම වාක්‍යය නැවත නැවත නොකියන්න.
 2. පරිශීලකයා අසන ලද නිශ්චිත කාරණය ගැන චරිත 3-4ක් තමන්ගේ අනන්‍යතාවයට අනුව එකිනෙකාට වාද කරමින් කෙටි හා තියුණු ලෙස අදහස් දැක්විය යුතුය.
 3. අවසානයේ [තට්ට රැවුල්කාරයා] මැදිහත් වී ප්‍රායෝගික උපදෙසක් ලබාදිය යුතුය.
 4. සෑම චරිතයකම කොටස [චරිතයේ නම] යනුවෙන් ආරම්භ විය යුතුය. (උදා: [විභව]: ...)`;
 
-    // Local Storage Loading
-    document.getElementById('provider').value = localStorage.getItem('aranya_provider') || 'gemini';
-    document.getElementById('apiKey').value = localStorage.getItem('aranya_api_key') || '';
+    // Load initial storage
+    const savedKey = localStorage.getItem('aranya_gemini_key') || '';
+    document.getElementById('apiKey').value = savedKey;
 
-    function saveKey() {
-        localStorage.setItem('aranya_api_key', document.getElementById('apiKey').value.trim());
+    if (savedKey) {
+        fetchGeminiModels();
     }
 
-    function toggleProvider() {
-        localStorage.setItem('aranya_provider', document.getElementById('provider').value);
+    function onKeyChanged() {
+        const key = document.getElementById('apiKey').value.trim();
+        localStorage.setItem('aranya_gemini_key', key);
+        if (key) fetchGeminiModels();
+    }
+
+    function saveSelectedModel() {
+        localStorage.setItem('aranya_selected_model', document.getElementById('modelSelect').value);
+    }
+
+    async function fetchGeminiModels() {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        const modelSelect = document.getElementById('modelSelect');
+        if (!apiKey) return;
+
+        modelSelect.innerHTML = '<option>Models සොයමින් පවතී...</option>';
+
+        try {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+            const data = await res.json();
+
+            if (data.error) {
+                throw new Error(data.error.message || 'API Key එක අවලංගුයි.');
+            }
+
+            // Filter models supporting generateContent
+            const models = (data.models || []).filter(m => 
+                m.supportedGenerationMethods && 
+                m.supportedGenerationMethods.includes('generateContent') &&
+                m.name.toLowerCase().includes('gemini')
+            );
+
+            if (models.length === 0) {
+                modelSelect.innerHTML = '<option value="gemini-1.5-flash">gemini-1.5-flash</option>';
+                return;
+            }
+
+            modelSelect.innerHTML = '';
+            const savedModel = localStorage.getItem('aranya_selected_model');
+
+            models.forEach(m => {
+                const cleanName = m.name.replace('models/', '');
+                const opt = document.createElement('option');
+                opt.value = cleanName;
+                opt.textContent = `${m.displayName || cleanName} (${cleanName})`;
+                
+                if (savedModel === cleanName || (!savedModel && cleanName.includes('1.5-flash'))) {
+                    opt.selected = true;
+                }
+                modelSelect.appendChild(opt);
+            });
+
+            saveSelectedModel();
+        } catch (err) {
+            console.error(err);
+            modelSelect.innerHTML = `
+                <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+                <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+            `;
+        }
     }
 
     function useStarter(text) {
@@ -321,12 +383,12 @@
         const input = document.getElementById('userInput');
         const text = input.value.trim();
         const apiKey = document.getElementById('apiKey').value.trim();
-        const provider = document.getElementById('provider').value;
+        const model = document.getElementById('modelSelect').value || 'gemini-1.5-flash';
         const sendBtn = document.getElementById('sendBtn');
 
         if (!text) return;
         if (!apiKey) {
-            alert('කරුණාකර ඉහත Settings Bar එකේ ඔබේ නොමිලේ ලබාගත් API Key එක ඇතුළත් කරන්න!');
+            alert('කරුණාකර ඉහත Settings Bar එකේ ඔබේ Google Gemini API Key එක ඇතුළත් කරන්න!');
             return;
         }
 
@@ -341,50 +403,34 @@
         sendBtn.disabled = true;
 
         try {
-            let replyText = "";
-
-            if (provider === 'gemini') {
-                // Call Google Gemini API (Fluent Sinhala)
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { text: SYSTEM_PROMPT + "\n\nපරිශීලකයාගේ ප්‍රශ්නය: " + text }
-                            ]
-                        }]
-                    })
-                });
-                const data = await res.json();
-                replyText = data.candidates[0].content.parts[0].text;
-            } else {
-                // Call Groq API
-                const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'llama-3.3-70b-versatile',
-                        messages: [
-                            { role: 'system', content: SYSTEM_PROMPT },
-                            { role: 'user', content: text }
-                        ],
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: SYSTEM_PROMPT + "\n\nපරිශීලකයාගේ ප්‍රශ්නය: " + text }
+                        ]
+                    }],
+                    generationConfig: {
                         temperature: 0.7
-                    })
-                });
-                const data = await res.json();
-                replyText = data.choices[0].message.content;
+                    }
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.error) {
+                throw new Error(data.error.message || 'Google API දෝෂයක්.');
             }
 
-            // Format Personas into clean boxes
+            const replyText = data.candidates[0].content.parts[0].text;
             const formatted = formatPersonas(replyText);
             document.getElementById(loadingId).innerHTML = formatted;
 
         } catch (err) {
-            document.getElementById(loadingId).innerHTML = `<span style="color:#ef4444;">දෝෂයක් සිදුවිය: API Key එක නිවැරදිද සහ තෝරාගත් Provider එකට ගැලපේදැයි පරීක්ෂා කරන්න.</span>`;
+            console.error(err);
+            document.getElementById(loadingId).innerHTML = `<span style="color:#ef4444;">දෝෂය: ${err.message || 'සම්බන්ධතාවය පරීක්ෂා කරන්න.'}</span>`;
         }
 
         sendBtn.disabled = false;
